@@ -80,7 +80,7 @@ class MainWindow():
 
                 opt2 = OptionMenu(self.root, variable2, *list_metric)
                 opt2.config(width=90, font=('Helvetica', 12))
-                opt2.pack(side="top")
+                opt2.pack(side="top ")
 
         opt = OptionMenu(self.root, variable, *list_as_name, command=checkcmbo)
         opt.config(width=90, font=('Helvetica', 12))
