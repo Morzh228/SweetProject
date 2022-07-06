@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from main_sql import postgres
 from Outlook import Emailer
-
+from tkinter import messagebox
 
 ### Внешняя составляющая текста
 text_size = '12'  # размер
@@ -18,12 +18,15 @@ class select():
     select_metric3 = "SELECT metric_name FROM metric WHERE as_name_id = 3"
     select_metric4 = "SELECT metric_name FROM metric WHERE as_name_id = 4"
     select_metric5 = "SELECT metric_name FROM metric WHERE as_name_id = 5"
+    select_metric5_7 = "SELECT theme FROM theme_letter WHERE metric_id = 54"
+    select_metric5_7_2 = "SELECT text_letter FROM text_letter WHERE metric_id = 54"
 
 
 class MainWindow():
     def __init__(self):  # Создаю окно
         self.root = Tk()
         self.root.geometry("500x650")
+        # self.root["bg"] = "gray50"
 
     def get_menu(self):  # Создаю выпадающие списки
         list_as_name = postgres(select.select_as)
@@ -91,18 +94,36 @@ class MainWindow():
                     elif cmb2.get() == list_metric[5]:
                         print(6)
                     elif cmb2.get() == list_metric[6]:
+                        IMTS, watch = StringVar(), StringVar()
+
                         def btn_play():
-                            Emailer()
+                            k = float(watch.get())
+                            if k > 8:
+                                messagebox.showinfo("Внимание!", "Оповещать не надо")
+                                exit()
+                            elif 3 < k <= 8:
+                                Emailer(postgres(select.select_metric5_7)[0].replace("#", f"{IMTS.get()}"),
+                                        postgres(select.select_metric5_7_2)[0].replace("#", f"{IMTS.get()}"), 0, 0)
+                            elif 1 < k <= 3:
+                                Emailer(postgres(select.select_metric5_7)[1].replace("#", f"{IMTS.get()}"),
+                                        postgres(select.select_metric5_7_2)[1].replace("#", f"{IMTS.get()}"), 0, 0)
+                            elif 0.5 < k <= 1:
+                                Emailer(postgres(select.select_metric5_7)[2].replace("#", f"{IMTS.get()}"),
+                                        postgres(select.select_metric5_7_2)[2].replace("#", f"{IMTS.get()}"), 0, 0)
+                            else:
+                                messagebox.showerror("Внимание!", "Звони исполнителю.")
+                                exit()
+                            # Emailer()
 
                         label2 = Label(self.root, text="Описание метрики: горит, когда приближается крайний срок")
                         label2.grid(row=4, column=0, sticky='w', padx=10, pady=10)
                         label3 = Label(self.root, text="Введите номер инцидента: ")
                         label3.grid(row=5, column=0, sticky='w', padx=10, pady=10)
-                        IMTS = Entry(width=width_)
+                        IMTS = Entry(textvariable=IMTS, width=width_)
                         IMTS.grid(row=6, column=0, sticky='w', padx=10, pady=10)
                         label4 = Label(self.root, text="Введите количество часов до КС: ")
                         label4.grid(row=7, column=0, sticky='w', padx=10, pady=10)
-                        watch = Entry(width=width_)
+                        watch = Entry(textvariable=watch, width=width_)
                         watch.grid(row=8, column=0, sticky='w', padx=10, pady=10)
                         btn = Button(text='Сформировать письмо', width=30, command=btn_play)
                         btn.grid(row=9, column=0, sticky='w', padx=10, pady=10)
