@@ -1,0 +1,1 @@
+incident = input('Введите IMTS: ')
