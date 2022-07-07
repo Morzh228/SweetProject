@@ -3,6 +3,7 @@ from tkinter import ttk
 from main_sql import postgres
 from Outlook import Emailer
 from tkinter import messagebox
+from datetime import datetime
 
 ### Внешняя составляющая текста
 text_size = '12'  # размер
@@ -46,6 +47,57 @@ class MainWindow():
 
             # Если выбрана вторая АСка
             elif cmb1.get() == postgres(select.select_as)[1]:
+                def checkcmb_metric(event):
+                    now_time = datetime.now()  # Время сейчас
+                    now_day = datetime.today().isoweekday()  # день недели (число от 1 до 7)
+                    current_time = now_time.strftime('%H:%M:%S')  # время сейчас
+                    if current_time > '09:00:00' and current_time < '19:00:00' and now_day in (1,2,3,4,5):
+                        messagebox.showinfo("Внимание!", "В данное время не мониторим.")
+                        exit()
+                    else:
+                        if current_time > '07:00:00' and current_time < '09:00:00':
+                            if cmb2.get() == list_metric[0]:
+                                print(1)
+                            elif cmb2.get() == list_metric[1]:
+                                print(2)
+                            elif cmb2.get() == list_metric[2]:
+                                print(3)
+                        elif current_time > '02:00:00' and current_time < '07:00:00':
+                            if cmb2.get() == list_metric[0]:
+                                print(1)
+                            elif cmb2.get() == list_metric[1]:
+                                print(2)
+                            elif cmb2.get() == list_metric[2]:
+                                print(3)
+                        else:
+                            if cmb2.get() == list_metric[3]:
+                                print(4)
+                            elif cmb2.get() == list_metric[4]:
+                                print(5)
+                            elif cmb2.get() == list_metric[5]:
+                                print(6)
+                            elif cmb2.get() == list_metric[6]:
+                                print(7)
+                            elif cmb2.get() == list_metric[7]:
+                                print(8)
+                            elif cmb2.get() == list_metric[8]:
+                                print(9)
+                            elif cmb2.get() == list_metric[9]:
+                                print(10)
+                            elif cmb2.get() == list_metric[10]:
+                                print(11)
+                            elif cmb2.get() == list_metric[11]:
+                                print(12)
+                            elif cmb2.get() == list_metric[12]:
+                                print(13)
+                            elif cmb2.get() == list_metric[13]:
+                                print(14)
+                            elif cmb2.get() == list_metric[14]:
+                                print(15)
+                            elif cmb2.get() == list_metric[15]:
+                                print(16)
+
+
                 # Вывод метрик:
                 label2 = Label(self.root, text="Выбери метрику: ")
                 label2.grid(row=2, column=0, sticky='w', padx=10, pady=10)
@@ -53,10 +105,13 @@ class MainWindow():
                 list_metric.extend(postgres(select.select_metric2))
                 cmb2 = ttk.Combobox(self.root, values=list_metric, state="readonly", width=width_,
                                     font=f"{test_style} {text_size} {content}")
+                cmb2.bind("<<ComboboxSelected>>", checkcmb_metric)
                 cmb2.grid(row=3, column=0, sticky='w', padx=10, pady=10)
 
             # Если выбрана третья АСка
             elif cmb1.get() == postgres(select.select_as)[2]:
+                def checkcmb_metric(event):
+                    pass
                 # Вывод метрик:
                 label2 = Label(self.root, text="Выбери метрику: ")
                 label2.grid(row=2, column=0, sticky='w', padx=10, pady=10)
@@ -64,7 +119,9 @@ class MainWindow():
                 list_metric.extend(postgres(select.select_metric3))
                 cmb2 = ttk.Combobox(self.root, values=list_metric, state="readonly", width=width_,
                                     font=f"{test_style} {text_size} {content}")
+                cmb2.bind("<<ComboboxSelected>>", checkcmb_metric)
                 cmb2.grid(row=3, column=0, sticky='w', padx=10, pady=10)
+                print(list_metric)
 
             # Если выбрана четвертая АСка
             elif cmb1.get() == postgres(select.select_as)[3]:
@@ -179,5 +236,3 @@ window = MainWindow()
 window.get_menu()
 
 window.run()
-
-
