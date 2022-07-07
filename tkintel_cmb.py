@@ -100,7 +100,6 @@ class MainWindow():
                             k = float(watch.get())
                             if k > 8:
                                 messagebox.showinfo("Внимание!", "Оповещать не надо")
-                                exit()
                             elif 3 < k <= 8:
                                 Emailer(postgres(select.select_metric5_7)[0].replace("#", f"{IMTS.get()}"),
                                         postgres(select.select_metric5_7_2)[0].replace("#", f"{IMTS.get()}"), 0, 0)
@@ -112,7 +111,7 @@ class MainWindow():
                                         postgres(select.select_metric5_7_2)[2].replace("#", f"{IMTS.get()}"), 0, 0)
                             else:
                                 messagebox.showerror("Внимание!", "Звони исполнителю.")
-                                exit()
+                            exit()
                             # Emailer()
 
                         label2 = Label(self.root, text="Описание метрики: горит, когда приближается крайний срок")
@@ -180,3 +179,5 @@ window = MainWindow()
 window.get_menu()
 
 window.run()
+
+
